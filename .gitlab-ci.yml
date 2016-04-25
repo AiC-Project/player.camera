@@ -1,0 +1,7 @@
+image: aic:player-build
+build-player-camera:
+    script:
+      - make
+    artifacts:
+      paths:
+      - camera-service
