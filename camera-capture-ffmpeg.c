@@ -41,8 +41,8 @@ typedef struct
 
 extern pthread_mutex_t dec_mtx;
 
-static char camera_filename[256] = "zebre.mpg";
-static const char default_filename[] = "zebre.mpg";
+static char camera_filename[256] = "default_camera.mpg";
+static const char default_filename[] = "default_camera.mpg";
 
 static int open_codec_context(int* stream_idx, AVFormatContext* fmt_ctx, enum AVMediaType type)
 {

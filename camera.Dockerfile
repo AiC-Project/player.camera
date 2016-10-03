@@ -16,6 +16,7 @@ RUN useradd -m developer
 
 COPY ./camera-service /home/developer/player_camera
 COPY ./start_camera /home/developer/start_camera
+COPY ./default_camera.mpg /home/developer/default_camera.mpg
 
 RUN chown -R developer.developer /home/developer
 
