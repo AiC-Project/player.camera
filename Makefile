@@ -2,10 +2,10 @@
 CC?=gcc
 
 all:
-	$(CC) camera-service.c misc.c camera-format-converters.c camera-capture-ffmpeg.c config_env.c net_pack.c logger.c amqp_rc.c -lavcodec -lavformat -lavutil -lswscale -ggdb -Wall -O3 -o camera-service -lrabbitmq -lpthread `pkg-config --cflags glib-2.0` -lglib-2.0
+	$(CC) camera-service.c misc.c camera-format-converters.c camera-capture-ffmpeg.c config_env.c net_pack.c logger.c remote_command.c -lavcodec -lavformat -lavutil -lswscale -ggdb -Wall -O3 -o camera-service -lrabbitmq -lpthread `pkg-config --cflags glib-2.0` -lglib-2.0
 
 debug:
-	$(CC) camera-service.c misc.c camera-format-converters.c camera-capture-ffmpeg.c config_env.c net_pack.c logger.c amqp_rc.c -lavcodec -lavformat -lavutil -lswscale -ggdb -Wall -Wextra -fsanitize=address -fstack-protector -DFORTIFY_SOURCE=2 -Og -o camera-service -lrabbitmq -lpthread `pkg-config --cflags glib-2.0` -lglib-2.0
+	$(CC) camera-service.c misc.c camera-format-converters.c camera-capture-ffmpeg.c config_env.c net_pack.c logger.c remote_command.c -lavcodec -lavformat -lavutil -lswscale -ggdb -Wall -Wextra -fsanitize=address -fstack-protector -DFORTIFY_SOURCE=2 -Og -o camera-service -lrabbitmq -lpthread `pkg-config --cflags glib-2.0` -lglib-2.0
 
 clean:
 	rm -f camera-service

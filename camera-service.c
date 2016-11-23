@@ -38,7 +38,7 @@
 #include "config_env.h"
 #include "misc.h"
 #include "logger.h"
-#include "amqp_rc.h"
+#include "remote_command.h"
 
 #define LOG_TAG "camera-service"
 #define  T(...) D(__VA_ARGS__)
@@ -1314,29 +1314,6 @@ android_list_web_cameras(void)
 }
 // clang-format on
 
-static int camera_connect(const char* ip, short port)
-{
-    struct addrinfo* result;
-    int sock, error, yes = 1;
-    ;
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == -1)
-        return -1;
-    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(int));
-    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
-
-    if (getaddrinfo(ip, NULL, NULL, &result))
-    {
-        perror("getaddrinfo()");
-        return -1;
-    }
-
-    ((struct sockaddr_in*) result->ai_addr)->sin_port = htons(port);
-    ((struct sockaddr_in*) result->ai_addr)->sin_family = AF_INET;
-
-    error = connect(sock, result->ai_addr, sizeof(struct sockaddr));
-    freeaddrinfo(result);
-    return (error == -1 ? error : sock);
-}
 
 int main(int argc, char** argv)
 {
@@ -1344,11 +1321,12 @@ int main(int argc, char** argv)
     char* vmip = configvar_string("AIC_PLAYER_VM_HOST");
 
     start_amqp_thread();
+    start_socket_thread();
     pthread_mutex_init(&dec_mtx, NULL);
 
     while (1)
     {
-        int sock = camera_connect(vmip, 24800);
+        int sock = connect_socket(vmip, 24800);
         if (sock == -1)
         {
             C("Could not connect to the VM at %s", vmip);
