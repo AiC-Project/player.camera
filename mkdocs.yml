@@ -1,3 +1,4 @@
 theme: readthedocs
 docs_dir: ./docs
 site_name: AiC player.camera
+extra_javascript: ['custom.js']
